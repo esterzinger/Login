@@ -17,9 +17,10 @@ namespace Login.Controllers
         }
         // GET: api/<ProductController>
         [HttpGet]
-        public async Task<List<Product>> Get([FromBody] int[] categories)
+
+        public async Task<List<Product>> Get([FromQuery]  int?[] categories,[FromQuery]  int? minprice,[FromQuery]  int? maxprice,[FromQuery]  string? description)
         {
-            return await _IProductService.GetAllProduct(categories);
+            return await _IProductService.GetAllProduct(categories,minprice,maxprice,description);
         }
 
         // GET api/<ProductController>/5

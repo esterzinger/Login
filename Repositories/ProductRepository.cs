@@ -16,11 +16,18 @@ namespace Repositories
         {
             _EsterChaniContext = esterChaniContext;
         }
-        public async Task<List<Product>> GetAll(int[] category)
+        public async Task<List<Product>> GetAll(int?[] categories, int? minprice, int? maxprice, string? description)
         {
+            Console.WriteLine(categories + "ffffffffffffffffffffffffffffff");
             //return new string[] { "value1", "value2" };
-            return (await _EsterChaniContext.Products.Include(product => product.Category).ToListAsync());
-
+            
+                var query=_EsterChaniContext.Products.Where(Product=> 
+                (minprice==null || Product.Price <= minprice)&&
+                  (maxprice==null || Product.Price >= maxprice)&&
+                   (categories.Length==0 || categories.Contains(Product.CategoryId))&&
+                    (description==null || Product.Description.Contains(description))
+                );
+            return await query.ToListAsync();
         }
         public async Task<Product> CreatProduct(Product product)
         {
