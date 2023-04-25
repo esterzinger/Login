@@ -10,25 +10,25 @@ namespace Services
 
         // GET api/<UserController>/5
 
-        public User GetUserById(int id);
+        public Task<User> GetUserById(int id);
        
 
         // POST api/<UserController>
 
-        public User CreatUser(User user);
+        public Task<User> CreatUser(User user);
 
 
-        public User Login(User detailsofuser);
+        public Task<User> Login(User detailsofuser);
 
 
 
         // PUT api/<UserController>/5
 
-        public void UpdateUserById(int id, User userToUpdate);
+       public Task UpdateUserById(int id, User userToUpdate);
 
 
         // DELETE api/<UserController>/
-        public void Delete(int id);
+        public Task Delete(int id);
        
     
 

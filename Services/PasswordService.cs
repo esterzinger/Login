@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Zxcvbn;
+//using Zxcvbn;
 
 
 namespace Services
@@ -13,8 +13,8 @@ namespace Services
        public int CheckStrengthPassword(String password)
         {
 
-           
-            return Zxcvbn.Core.EvaluatePassword(password).Score;
+            return 2;
+            //return Zxcvbn.Core.EvaluatePassword(password).Score;
 
         }
     }

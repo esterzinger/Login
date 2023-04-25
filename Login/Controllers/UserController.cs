@@ -23,7 +23,7 @@ namespace Login.Controllers
 
         // GET: api/<UserController>
         [HttpGet]
-        public IEnumerable<string> Get()
+         public IEnumerable<string> Get()
         {
             return _UserService.GetAllUsers();
            // return new string[] { "value1", "value2" };
@@ -31,9 +31,9 @@ namespace Login.Controllers
 
         // GET api/<UserController>/5
         [HttpGet("{id}")]
-        public User Get(int id)
+        public async Task<User> Get(int id)
         {
-            return _UserService.GetUserById(id);
+            return await _UserService.GetUserById(id);
             
 
         }
@@ -41,18 +41,18 @@ namespace Login.Controllers
         // POST api/<UserController>
         [HttpPost]
        
-        public User Post([FromBody] User user)
+        public async Task<ActionResult<User>> Post([FromBody] User user)
         {
-            return _UserService.CreatUser(user);
+            return await _UserService.CreatUser(user);
            
 
 
         }
         [HttpPost]
         [Route("login")]
-        public User Login([FromBody] User detailsofuser)
+        public async Task<ActionResult<User>> Login([FromBody] User detailsofuser)
         {
-            return _UserService.Login(detailsofuser);
+            return await _UserService.Login(detailsofuser);
            
 
 
@@ -61,17 +61,18 @@ namespace Login.Controllers
 
         // PUT api/<UserController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] User userToUpdate)
+        public async Task Put(int id, [FromBody] User userToUpdate)
         {
-             _UserService.UpdateUserById(id, userToUpdate);
+             await _UserService.UpdateUserById(id, userToUpdate);
            
 
         }
 
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
+            await _UserService.Delete(id);
         }
     }
 }

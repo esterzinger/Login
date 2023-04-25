@@ -4,11 +4,11 @@
 
     const userJson = sessionStorage.getItem('user');
     const user = JSON.parse(userJson);
-   
+   console.log(user)
     document.getElementById("emailChange").value = user.email;
     document.getElementById("passwordChange").value=user.password;
-    document.getElementById("nameChange").value=user.name;
-    document.getElementById("ageChange").value=user.age;
+    document.getElementById("firstChange").value=user.firstName;
+    document.getElementById("lastChange").value=user.lastName;
     
 }
 async function sumbitChange() {

@@ -2,18 +2,19 @@
 async function Register() {
     console.log("H");
    const newuser={
-        Name : document.getElementById("nameRegister").value,
-       Age: document.getElementById("ageRegister").value,
+       FirstName : document.getElementById("nameRegister").value,
+       LastName: document.getElementById("ageRegister").value,
        Password: document.getElementById("passwordRegister").value,
        Email: document.getElementById("emailRegister").value
     }
-    const res=await fetch("/api/user",{
+    const res = await fetch("https://localhost:44398/api/user",{
         method: "POST",
         headers: {
             'Content-Type':  'application/json'
         },
         body: JSON.stringify(newuser)
     })
+
     const status = res.status;
     if (status == 200) {
         alert('user signed up successfully');

@@ -25,25 +25,25 @@ namespace Services
 
         // GET api/<UserController>/5
 
-        public User GetUserById(int id)
+        public async Task<User> GetUserById(int id)
         {
-            return _userRepository.GetUserById(id);
+            return await _userRepository.GetUserById(id);
            
 
         }
 
         // POST api/<UserController>
 
-        public User CreatUser(User user)
+        public async Task<User> CreatUser(User user)
         {
-            return _userRepository.CreatUser(user);
+            return await _userRepository.CreatUser(user);
             
 
         }
 
-        public User Login(User detailsofuser)
+        public async  Task<User> Login(User detailsofuser)
         {
-            return _userRepository.Login(detailsofuser);
+            return await _userRepository.Login(detailsofuser);
             
 
 
@@ -52,17 +52,17 @@ namespace Services
 
         // PUT api/<UserController>/5
 
-        public void UpdateUserById(int id, User userToUpdate)
+        public async Task UpdateUserById(int id, User userToUpdate)
         {
-            _userRepository.UpdateUserById(id, userToUpdate);
+            await _userRepository.UpdateUserById(id, userToUpdate);
            
 
         }
 
         // DELETE api/<UserController>/
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-
+            await _userRepository.Delete(id);
         }
     }
 
