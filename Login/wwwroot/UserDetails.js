@@ -18,11 +18,11 @@ async function sumbitChange() {
     const id = user.id;
 
     const changeuser = {
-        Name: document.getElementById("nameChange").value,
-        Age: document.getElementById("ageChange").value,
+        firstName: document.getElementById("firstChange").value,
+        lastName: document.getElementById("lastChange").value,
         Password: document.getElementById("passwordChange").value,
-        Email: document.getElementById("emailChange").value,
-        Id: id
+        email: document.getElementById("emailChange").value,
+        userId: id
     }
     const res = await fetch(`/api/user/${id}`, {
         method: "PUT",

@@ -67,7 +67,7 @@
 
     <div id="filters" class="Filters fixedVisible">
         <div class="ResultCount" style="position: absolute; top: 0px;">
-            <a class="Clear" href="">נקה הכל</a>
+            <a class="Clear" href="" onclick="clean()">נקה הכל</a>
             <div><span id="counter">  </span> מוצרים</div>
 
             <div>
@@ -84,11 +84,11 @@
 
             <input type="text" id="nameSearch" class="floatRight" placeholder="חיפוש לפי שם מוצר">
 
-            <button class="floatRight" tabindex="0" onclick="filterProducts()">
+            <button class="floatRight" tabindex="0" onclick="filterProducts(event)">
                 <span class="header42"><img src="Images/searchIcon.png" width="100%" alt="סמל חיפוש"></span>
             </button>
         </div>
-        <div id="priceRangeFilter" class="filterBreak">
+        <div id="priceRangeFilter" class="filterBreak"> 
             <div><span id="counter">  </span> מחיר:</div>
 
             <input type="text" maxlength="9" id="minPrice" class="priceInputText">
