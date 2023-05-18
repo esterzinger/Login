@@ -2,6 +2,7 @@
 using Repositories;
 using System.Runtime.InteropServices;
 using System.Text.Json;
+using Services;
 
 namespace Services
 {
@@ -9,10 +10,13 @@ namespace Services
 
     {
         IUserRepository _userRepository;
+        IPasswordService _passwordService;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IPasswordService passwordService)
         {
             _userRepository = userRepository;
+            _passwordService = passwordService;
+
         }
 
         public IEnumerable<string> GetAllUsers()
@@ -36,7 +40,12 @@ namespace Services
 
         public async Task<User> CreatUser(User user)
         {
-            return await _userRepository.CreatUser(user);
+
+            int password = _passwordService.CheckStrengthPassword(user.Password);
+            if (password <= 2)
+            { return null; }
+          
+             return await _userRepository.CreatUser(user);
             
 
         }

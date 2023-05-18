@@ -5,23 +5,32 @@
 
 })
 
+let orderSum
 const calcItemCount = () => {
-    document.getElementById("itemCount").innerText="hhh"
+    const bag = JSON.parse(localStorage.getItem('bag'));
+    let sum = 0
+    bag.forEach(p => { sum += p.quantity * p.price })
+    document.getElementById("totalAmount").innerText = sum
 }
 
 const calcTotalAmount = () => {
-    document.getElementById("totalAmount").innerText = "rrr"
+    const bag = JSON.parse(localStorage.getItem('bag'));
+
+    document.getElementById("itemCount").innerText = bag.length
 }
 
 
 const deleteFromCart = (product) => {
-    console.log(product)
+    /*console.log(product)*/
     const bag = JSON.parse(localStorage.getItem('bag'));
-    const newBag = bag.filter(p => p.productId != product.productId )
+    bag.forEach(p => { if (p.productId == product.productId) p.quantity-- })
+    const newBag = bag.filter(p => p.quantity != 0)
+    console.log(newBag)
     localStorage.setItem('bag', JSON.stringify(newBag));
     getProductsFromCart()
-   /* count--;*/
-    //document.getElementById("ItemsCountText").innerText = count
+    calcItemCount()
+    calcTotalAmount()
+
     
 }
 const displayProduct = (product) => {
@@ -30,17 +39,15 @@ const displayProduct = (product) => {
     var clone = temp.content.cloneNode(true);
     console.log(clone)
     clone.querySelector("img").src = `../Images/food/${product.img}.jpg`
+    clone.querySelector(".itemNumber").innerText = product.quantity;
     clone.querySelector(".itemName").innerText = product.productName;
     clone.querySelector('button').addEventListener('click', () => { deleteFromCart(product) });
     document.getElementById("items").appendChild(clone)
 
 }
 
-const drowproducts = (bag) => {
-//document.getElementById("items").innerHTML=""
+const drowProducts = (bag) => {
     const productToDelete = document.getElementsByClassName("item-row");
-    //console.log(productToDelete)
-    //productToDelete.map((p)=> { p.innerHTML = "" });
     for (let i = 0; i < productToDelete.length; i++) {
         productToDelete[i].innerHTML=""
     }
@@ -51,15 +58,21 @@ const drowproducts = (bag) => {
 
 function getProductsFromCart() { 
     const bag = JSON.parse(localStorage.getItem('bag'));
-    drowproducts(bag)
+    drowProducts(bag)
 }
-
-const createOrder = async () => {
-    const cart = json.Parse(localStorage.getItem("cart"));
-    const user = JSON.parse(sessionStorage.getItem("user"));
+const updateShoppingBagPage = () => {
+    calcItemCount()
+    calcTotalAmount()
+    getProductsFromCart()
+}
+const sendOrder =async (user) => {
+    const cart = JSON.parse(localStorage.getItem("bag"));
     const order = {
         userID: user.userId,
-        orderItem: cart
+        orderItems: cart,
+        orderSum: orderSum,
+        OrderDate: new Date()
+
     }
     const res = await fetch('https://localhost:44398/api/Order', {
         method: "POST",
@@ -68,4 +81,32 @@ const createOrder = async () => {
         },
         body: JSON.stringify(order)
     });
+
+    const orderWiteId= await res.json()
+    console.log(orderWiteId)
+    localStorage.setItem('bag', JSON.stringify([]));
+    alert(" מספר ההזמנה שלך הוא " + orderWiteId.orderId)
+    updateShoppingBagPage()
+}
+
+const createOrder = async () => {
+   
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (!user)
+        alert("אתה צריך להרשם!!!!!!")    
+    else
+        sendOrder(user)
+    
+}
+
+const Getdate = () => {
+    const date= new Date()
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+
+    // This arrangement can be altered based on how we want the date's format to appear.
+    let currentDate = `${day}-${month}-${year}`;
+    return currentDate;
 }

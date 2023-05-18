@@ -13,8 +13,8 @@ namespace Services
        public int CheckStrengthPassword(String password)
         {
 
-            return 2;
-            //return Zxcvbn.Core.EvaluatePassword(password).Score;
+            //return 2;
+            return Zxcvbn.Core.EvaluatePassword(password).Score;
 
         }
     }
