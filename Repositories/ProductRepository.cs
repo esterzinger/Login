@@ -18,7 +18,7 @@ namespace Repositories
         }
         public async Task<List<Product>> GetAll(int?[] categories,string? name, int? minprice, int? maxprice, string? description)
         {
-            Console.WriteLine(categories + "ffffffffffffffffffffffffffffff");
+          
         //return new string[] { "value1", "value2" };
         
             var query=_EsterChaniContext.Products.Where(Product=> 
@@ -26,7 +26,7 @@ namespace Repositories
                   (maxprice==null || Product.Price >= maxprice)&&
                    (categories.Length==0 || categories.Contains(Product.CategoryId))&&
                    (name == null || Product.ProductName.Contains(name) || Product.Description.Contains(name)) 
-                );
+                ).Include(p=>p.Category);
             return await query.ToListAsync();
         }
         public async Task<Product> CreatProduct(Product product)
@@ -36,6 +36,10 @@ namespace Repositories
 
             return product;
 
+        }
+        public async Task<Product> GetProductById(int id)
+        {
+            return await _EsterChaniContext.Products.FindAsync(id);
         }
     }
 }

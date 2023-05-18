@@ -3,6 +3,9 @@ using System.Text.Json;
 using Login;
 using Services;
 using Entity;
+using DTO;
+using NLog.Web;
+using AutoMapper;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Login.Controllers
@@ -14,10 +17,14 @@ namespace Login.Controllers
     public class UserController : ControllerBase
     {
         IUserService _UserService;
+        IMapper _mapper;
+        ILogger<UserController> _logger;
 
-        public UserController(IUserService UserService)
+        public UserController(IUserService UserService, IMapper mapper, ILogger<UserController> logger)
         {
             _UserService = UserService;
+            _mapper = mapper;
+            _logger =logger;
         }
 
 
@@ -31,39 +38,51 @@ namespace Login.Controllers
 
         // GET api/<UserController>/5
         [HttpGet("{id}")]
-        public async Task<User> Get(int id)
+        public async Task<UserDto> Get(int id)
         {
-            return await _UserService.GetUserById(id);
-            
+
+            User user= await _UserService.GetUserById(id);
+            UserDto userDto= _mapper.Map<User, UserDto>(user);
+            return userDto;
 
         }
 
         // POST api/<UserController>
         [HttpPost]
        
-        public async Task<ActionResult<User>> Post([FromBody] User user)
+        public async Task<ActionResult<UserDto>> Post([FromBody] UserWithPasswordDto userWithPasswordDto)
         {
-            return await _UserService.CreatUser(user);
-           
+            
+            User user= _mapper.Map<UserWithPasswordDto, User>(userWithPasswordDto);
+            User user2 = await _UserService.CreatUser(user);
+            if (user2 == null)
+                return BadRequest();
 
-
+            _logger.LogInformation($"Register attempted with User Name {user2.FirstName} {user2.LastName} with passward{user2.Password}");
+            UserDto userDto= _mapper.Map<User, UserDto>(user2);
+            return userDto;
         }
+
         [HttpPost]
         [Route("login")]
-        public async Task<ActionResult<User>> Login([FromBody] User detailsofuser)
+        public async Task<ActionResult<UserDto>> Login([FromBody] UserWithPasswordDto detailsofuser)
         {
-            return await _UserService.Login(detailsofuser);
-           
-
+            
+            User user = _mapper.Map<UserWithPasswordDto, User>(detailsofuser);
+            User user2 = await _UserService.Login(user);
+            _logger.LogInformation($"Login user with email {user2.Email} with passward{user2.Password}");
+            UserDto userDto = _mapper.Map<User, UserDto>(user2);
+            return userDto;
 
         }
 
 
         // PUT api/<UserController>/5
         [HttpPut("{id}")]
-        public async Task Put(int id, [FromBody] User userToUpdate)
+        public async Task Put(int id, [FromBody] UserWithPasswordDto userToUpdate)
         {
-             await _UserService.UpdateUserById(id, userToUpdate);
+            User user = _mapper.Map<UserWithPasswordDto, User>(userToUpdate);
+            await _UserService.UpdateUserById(id, user);
            
 
         }

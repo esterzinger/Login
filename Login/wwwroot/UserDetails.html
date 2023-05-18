@@ -3,15 +3,18 @@
 <head>
     <script src="UserDetails.js"></script>
     <meta charset="utf-8" />
+    <link href="../Style/HomePage.css" rel="stylesheet" />
     <title></title>
 </head>
-<body style=" text-align:center">
-    sucsess to login<br />
-    <a onclick="showChange()"  style="text-decoration:solid;"> change your details?</a><br />
-    <div style="display:none; background-color:black; color:aliceblue; width:500px; text-align:center"  id="changeDetails">
+<body dir="ltr" style=" text-align:center">
+   
+    <br />
+    <div style=" color:aliceblue; width:500px; text-align:center" id="changeDetails">
+        <label for="firstChange">שם פרטי </label>
         <input type="text" id="firstChange" />הכנס שם פרטי<br />
+        <label for="lastChange">שם משפחה </label>
         <input type="text" id="lastChange" />הכנס שם משפחה<br />
-        <input type="text" id="passwordChange" />הכנס סיסמא<br />
+        <label for="emailChange">הכנס מייל </label>
         <input type="text" id="emailChange" />הכנס מייל<br />
         <button onclick="sumbitChange()">לשנות </button>
     </div>

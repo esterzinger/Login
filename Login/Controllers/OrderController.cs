@@ -1,4 +1,6 @@
-﻿using Entity;
+﻿using AutoMapper;
+using DTO;
+using Entity;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
@@ -11,12 +13,14 @@ namespace Login.Controllers
     public class OrderController : ControllerBase
     {
         IOrderService _OrderService;
-        public OrderController(IOrderService OrderService)
+        IMapper _mapper;
+        public OrderController(IOrderService OrderService, IMapper mapper)
         {
             _OrderService = OrderService;
+            _mapper = mapper;
         }
         // GET: api/<OrderController>
-        [HttpGet]
+       // [HttpGet]
         //public async Task<List<Order>> Get()
         //{
         //    return (await _OrderService.GetAllOrders());
@@ -31,9 +35,11 @@ namespace Login.Controllers
 
         // POST api/<OrderController>
         [HttpPost]
-        public async Task<Order> Post([FromBody] Order order)
+        public async Task<OrderDto> Post([FromBody] OrderDto orderDto)
         {
-           return ( await _OrderService.CreatOrder(order));
+            Order order = _mapper.Map<OrderDto,Order >(orderDto);
+            OrderDto orderDtoWiteId = _mapper.Map < Order, OrderDto > (await _OrderService.CreatOrder(order));
+            return (orderDtoWiteId);
             
         }
 

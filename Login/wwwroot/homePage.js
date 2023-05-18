@@ -3,7 +3,7 @@ async function Register() {
     console.log("H");
    const newuser={
        FirstName : document.getElementById("nameRegister").value,
-       LastName: document.getElementById("ageRegister").value,
+       LastName: document.getElementById("lastNameRegister").value,
        Password: document.getElementById("passwordRegister").value,
        Email: document.getElementById("emailRegister").value
     }
@@ -42,8 +42,8 @@ async function login() {
     if (status == 200) {
         alert('user signed In successfully');
         const user = await res.json();
-        sessionStorage.setItem("user", JSON.stringify(user));
-        window.location.assign("./UserDetails.html"); 
+        localStorage.setItem("user", JSON.stringify(user));
+        window.location.assign("./Products.html"); 
     }
     else
         alert("have erorr with status" + status)
@@ -59,11 +59,11 @@ async function cheakStrength() {
         },
         body: JSON.stringify(password)
     })
-   
-    const res1 = await res.json();
- 
-     alert(res1);
+    const score = await res.json();
+    document.getElementById("passwordStrengh").value = score;
+
 }
+
 function Loud() {
     const user = JSON.parse(localStorage.getItem('user'));
     document.getElementById('name').setAttribute('value', user.name);

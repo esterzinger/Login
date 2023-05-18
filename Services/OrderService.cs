@@ -11,10 +11,13 @@ namespace Services
     public class OrderService :IOrderService
     {
         IOrderRepository _OrderRepository;
+        IProductRepository _ProductRepository;
+        
 
-        public OrderService(IOrderRepository orderRepository)
+        public OrderService(IOrderRepository orderRepository, IProductRepository productRepository)
         {
             _OrderRepository = orderRepository;
+            _ProductRepository= productRepository;
         }
 
        // public async Task<List<Order>> GetAllOrders()
@@ -36,6 +39,16 @@ namespace Services
 
         public async Task<Order> CreatOrder(Order order)
         {
+            int sum = 0;
+            foreach (var i in order.OrderItems)
+            {
+                Product product = await _ProductRepository.GetProductById(i.ProductId);
+                sum += product.Price * i.Quantity;;
+              
+            }
+            if (sum != order.OrderSum)
+                order.OrderSum = sum;
+
             return await _OrderRepository.CreatOrder(order);
 
 
